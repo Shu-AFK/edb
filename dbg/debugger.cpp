@@ -2,6 +2,10 @@
 
 #include "helper.h"
 
+extern "C" {
+#include "linenoise.h"
+}
+
 #include <iostream>
 #include <sys/ptrace.h>
 #include <sys/types.h>
@@ -10,7 +14,7 @@
 #include <cerrno>
 #include <cstring>
 
-void debugger::run() {
+void edb::debugger::run() {
   int wait_status;
   auto options = 0;
   waitpid(m_pid, &wait_status, options);
@@ -23,7 +27,7 @@ void debugger::run() {
   }
 }
 
-void debugger::handle_command(const std::string &line) {
+void edb::debugger::handle_command(const std::string &line) {
   auto args = split(line, ' ');
   auto command = args[0];
 
@@ -35,7 +39,7 @@ void debugger::handle_command(const std::string &line) {
   }
 }
 
-void debugger::continue_execution() {
+void edb::debugger::continue_execution() {
   ptrace(PTRACE_CONT, m_pid, nullptr, nullptr);
 
   int wait_status;
